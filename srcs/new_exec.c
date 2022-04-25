@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 19:50:33 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/25 18:19:35 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 18:22:36 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,11 @@ void	exec_without_pipes(t_data *data)
 		{
 			//ici, on est dans le child
 
-			// set_sig_hd_child();
+			set_sig_hd_child();
 			// signal(SIGINT, handler);
 
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
+			// signal(SIGINT, SIG_DFL);
+			// signal(SIGQUIT, SIG_DFL);
 
 			// dup2(fd_in, STDIN_FILENO);
 

@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 17:10:31 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/25 18:07:51 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 20:34:52 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,29 +49,34 @@ void	redir_in(t_token *file)
 	}
 }
 
-/*
-	open le file, brancher l'input, write dedans jusqu a recevoir le del, close, re open en read brancher la sortie
-*/
-
 void	heredoc(t_token *del)
 {
-	(void)del;
-	// int		fd;
-	// char	*str;
+	dprintf(2, "HEREDOC\n");
+	int		fd;
+	char	*str;
 
-	// //TODO si quotes dans delimiteur, heredoc sans expansion
-	// dup2(fd, STDIN_FILENO);
-	// close(fd);
-	// str = NULL;
-	// str = ft_strdup(NULL);
-	// fd = open("/tmp/minishell_heredoc", O_CREAT | O_WRONLY | O_TRUNC);
-	// while (ft_strncmp(str, del->str, ft_strlen(del->str)) != 0)
-	// {
-	// 	str = readline("> ");
-	// 	if (!str)
-	// 		exit(0);
-	// }
-	// fd = dup(1);
+	(void)del;
+	fd = open("/tmp/minishell_heredoc", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	dprintf(2, "in heredoc, fd = %d\n", fd);
+	while (42)
+	{
+		str = readline("> ");
+		if (str && ft_strncmp(str, del->str, ft_strlen(del->str)) != 0)
+		{
+			write(fd, str, strlen(str));
+			write(fd, "\n", 2);
+			free(str);
+		}
+		else
+		{
+			free(str);
+			break ;
+		}
+	}
+	close(fd);
+	fd = open("/tmp/minishell_heredoc", O_RDONLY, 0644);
+	dup2(fd, STDIN_FILENO);
+	close(fd);
 }
 
 int	count_redir(t_data *data, t_cmd_box *cmd)
