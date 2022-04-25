@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 19:50:33 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/25 18:22:36 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 20:40:56 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	exec_general(t_data *data)
 
 void	exec_without_pipes(t_data *data)
 {
-	// dprintf(2, "exec without pipes\n");
 	t_cmd_box	*tmp;
 	pid_t		pid;
 	int			fd_in;
@@ -32,11 +31,9 @@ void	exec_without_pipes(t_data *data)
 	tmp = *(data->l_cmd);
 	fd_in = dup(STDIN_FILENO);
 	fd_out = dup(STDOUT_FILENO);
-	
-	count_redir(data, tmp); //! si c'est un builtin seulement
+	count_redir(data, tmp);
 	data->av = arg_maker(tmp->args, tmp->len);
 	data->arr_env = l_env_to_array(data->l_env);
-	// if (ft_command(data, data->av, tmp) == 1)
 	if (ft_command(data, data->av) == 1)
 		;
 
@@ -45,8 +42,6 @@ void	exec_without_pipes(t_data *data)
 		pid = fork();
 		if (pid == 0)
 		{
-			//ici, on est dans le child
-
 			set_sig_hd_child();
 			// signal(SIGINT, handler);
 
@@ -82,6 +77,8 @@ void	exec_without_pipes(t_data *data)
 
 	dup2(fd_out, STDOUT_FILENO);
 	dup2(fd_in, STDIN_FILENO);
+	close(fd_in);
+	close(fd_out);
 
 	close(fd_in);
 }
