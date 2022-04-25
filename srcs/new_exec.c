@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 19:50:33 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/25 20:40:56 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 20:47:52 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,13 @@ void	exec_without_pipes(t_data *data)
 	data->arr_env = l_env_to_array(data->l_env);
 	if (ft_command(data, data->av) == 1)
 		;
-
 	else
 	{
 		pid = fork();
 		if (pid == 0)
 		{
 			set_sig_hd_child();
-			// signal(SIGINT, handler);
-
-			// signal(SIGINT, SIG_DFL);
-			// signal(SIGQUIT, SIG_DFL);
-
-			// dup2(fd_in, STDIN_FILENO);
-
-			// count_redir(data, tmp);	//! attention a pop les redir avant de faire les arg
-
 			close(fd_in);
-
-			disp_l_cmd(*(data->l_cmd));
 			//TODO a securiser
 			launch_exec(data->av, data->arr_env, data);
 			freetab(data->av);
@@ -62,9 +50,7 @@ void	exec_without_pipes(t_data *data)
 			freetab(data->arr_env);
 			data->arr_env = NULL;
 
-			// dprintf(2, "something went wrong, child is alive\n");
-			// exit(0);	//! a changer!
-			ft_exit(data, 2);
+			ft_exit(data, 2);	//!a voir
 
 		}
 		wait(NULL);
@@ -79,13 +65,10 @@ void	exec_without_pipes(t_data *data)
 	dup2(fd_in, STDIN_FILENO);
 	close(fd_in);
 	close(fd_out);
-
-	close(fd_in);
 }
 
 void	exec_with_pipes(t_data *data)
 {
-	// dprintf(2, "exec with pipes\n");
 	int			pipefd[2];
 	t_cmd_box	*tmp;
 	int			i;
@@ -103,13 +86,7 @@ void	exec_with_pipes(t_data *data)
 		pid = fork();
 		if (pid == 0)
 		{
-			//ici on est dans le child
-			
 			// set_sig_hd_child();
-			// // signal(SIGINT, handler);
-			signal(SIGINT, SIG_DFL);
-			signal(SIGQUIT, SIG_DFL);
-
 			dup2(fd_in, STDIN_FILENO);
 			if (i != data->nb_pipes)
 				dup2(pipefd[1], STDOUT_FILENO);
@@ -118,20 +95,12 @@ void	exec_with_pipes(t_data *data)
 			close(pipefd[0]);
 			close(pipefd[1]);
 			close(fd_in);
-
-			// dprintf(2, "after redir, l cmd = /n");
-			// disp_l_cmd(*(data->l_cmd));
 			data->arr_env = l_env_to_array(data->l_env);
 			data->av = arg_maker(tmp->args, tmp->len);
 			if (ft_command(data, data->av) == 1)
 				;
 			else
 				launch_exec(data->av, data->arr_env, data);
-
-			//* si on arrive ici, il y a un pb, le child est vivant
-			// dprintf(2, "something went wrong, child is alive\n");
-
-			// dprintf(2, "cmd not found\n");
 			freetab(data->av);
 			data->av = NULL;
 			freetab(data->arr_env);
