@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 19:34:56 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/24 05:01:22 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 18:12:26 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct s_elem_env
 typedef struct s_cmd_box
 {
 	int					len;
-	int					fd_in;
+	int					fd_in;	//a supprimer
 	int					fd_out;
 	t_token				*args;
 	struct s_cmd_box	*next;

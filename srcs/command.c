@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/26 15:44:25 by redarnet          #+#    #+#             */
-/*   Updated: 2022/04/19 18:20:07 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 17:45:37 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ int	ft_strlen_arr(char **str)
 	return (i);
 }
 
+// int		ft_command(t_data *data, char **str, t_cmd_box *tmp)
 int		ft_command(t_data *data, char **str)
 {
 	char	*result;
 	int		i;
 	int		len_str;
+
 
 	result = NULL;
 	i = 0;

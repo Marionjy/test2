@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 21:07:30 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/24 04:57:09 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 17:50:14 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ int	main(void)
 		while (cmd && *cmd)	//! voir comportement si !*cmd
 		{
 			tmp_tab = splitting(cmd);
-			// affiche_tab(tmp_tab);
 
 			if (!tmp_tab)
 				break ;		//! gerer ca correctement, attention au segfault
@@ -136,7 +135,7 @@ int	main(void)
 				cmd = NULL;
 				break;
 			}
-			dprintf(2, "si on arrive ici, syntaxe ok\n");
+			// dprintf(2, "si on arrive ici, syntaxe ok\n");
 			create_sublist(&data);
 
 			// dprintf(2, "list token post sublist: \n");

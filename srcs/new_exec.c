@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 19:50:33 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/24 08:11:20 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 18:19:35 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@ void	exec_without_pipes(t_data *data)
 	t_cmd_box	*tmp;
 	pid_t		pid;
 	int			fd_in;
+	int			fd_out;
 
-	// fd_in = 5425242;
 	tmp = *(data->l_cmd);
 	fd_in = dup(STDIN_FILENO);
-	// dprintf(2, "fd in af dup = %d stdin = %d, stdout = %d\n", fd_in, STDIN_FILENO, STDOUT_FILENO);
-	count_redir(data, tmp);
+	fd_out = dup(STDOUT_FILENO);
+	
+	count_redir(data, tmp); //! si c'est un builtin seulement
 	data->av = arg_maker(tmp->args, tmp->len);
 	data->arr_env = l_env_to_array(data->l_env);
+	// if (ft_command(data, data->av, tmp) == 1)
 	if (ft_command(data, data->av) == 1)
 		;
 
@@ -45,20 +47,18 @@ void	exec_without_pipes(t_data *data)
 		{
 			//ici, on est dans le child
 
-			set_sig_hd_child();
-			// // signal(SIGINT, handler);
-			// signal(SIGINT, SIG_DFL);
-			// signal(SIGQUIT, SIG_DFL);
+			// set_sig_hd_child();
+			// signal(SIGINT, handler);
 
-			// dprintf(2, "in child, before dup2, fdin = %d, stdin = %d\n", fd_in, STDIN_FILENO);
-			dup2(fd_in, STDIN_FILENO);
-			// dprintf(2, "in child, after dup2, fdin = %d, stdin = %d\n", fd_in, STDIN_FILENO);
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
 
-			//TODO gerer les redirections
-			// count_redir(data, tmp);
+			// dup2(fd_in, STDIN_FILENO);
+
+			// count_redir(data, tmp);	//! attention a pop les redir avant de faire les arg
 
 			close(fd_in);
-			dprintf(2, "after redir, l cmd = /n");
+
 			disp_l_cmd(*(data->l_cmd));
 			//TODO a securiser
 			launch_exec(data->av, data->arr_env, data);
@@ -79,6 +79,9 @@ void	exec_without_pipes(t_data *data)
 	data->av = NULL;
 	freetab(data->arr_env);
 	data->arr_env = NULL;
+
+	dup2(fd_out, STDOUT_FILENO);
+	dup2(fd_in, STDIN_FILENO);
 
 	close(fd_in);
 }

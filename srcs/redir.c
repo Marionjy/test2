@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 17:10:31 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/24 04:33:18 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/25 18:07:51 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	redir_out(t_token *file)
 	dprintf(2, "	REDIR OUT	\n");
 	int	fd;
 
+	dprintf(2, "open |%s|", file->str);
 	fd = open(file->str, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	dup2(fd, STDOUT_FILENO);
 	close(fd);
@@ -83,9 +84,9 @@ int	count_redir(t_data *data, t_cmd_box *cmd)
 	i = 0;
 	ret = 0;
 	tmp = cmd->args;
-	while (i <= cmd->len && tmp)
+	while (i < cmd->len && tmp)
 	{
-		if (tmp->type >= 4 && tmp->type <= 7)
+		if (tmp->type >= REDIR_IN && tmp->type <= REDIR_OUT_APP)
 			ret++;
 		i++;
 		tmp = tmp->next;
@@ -99,17 +100,16 @@ int make_redir(t_data *data, t_cmd_box *cmd, int nb_redir)
 	dprintf(2, "	MAKE REDIR	\n");
 	t_token	*tmp;
 	t_token	*tmp2;
-	//t_elem_w_op	*tmp2;
-	int			i;
+	int		i;
 
 	i = 0;
 	tmp = cmd->args;	//proteger de partout
-	// printf("cmd = %s\n", tmp->str);
 	while (tmp && i < nb_redir)
 	{
 		//TODO gerer les heredocs ailleurs
 		//TODO ca manque de close sur les redirs
-		if (tmp->type >= 4 && tmp->type <= 7)	//selon le type de redirection
+
+		if (tmp->type >= REDIR_IN && tmp->type <= REDIR_OUT_APP)	//selon le type de redirection
 		{
 			if (is_same(tmp->str, "<<"))
 				heredoc(tmp->next);
@@ -133,7 +133,7 @@ int make_redir(t_data *data, t_cmd_box *cmd, int nb_redir)
 			tmp = tmp->next->next;
 			pop_token(tmp2->next);
 			pop_token(tmp2);
-			cmd->len = cmd->len - 2;
+			cmd->len = cmd->len - 2;	//? voir si = 0 apres
 
 			// tmp = tmp->next;
 		}
