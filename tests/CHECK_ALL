@@ -1,0 +1,116 @@
+
+   _____ _    _ ______ _____ _  ________ _____  
+  / ____| |  | |  ____/ ____| |/ /  ____|  __ \ 
+ | |    | |__| | |__ | |    | ' /| |__  | |__) |
+ | |    |  __  |  __|| |    |  < |  __| |  _  / 
+ | |____| |  | | |___| |____| . \| |____| | \ \ 
+  \_____|_|  |_|______\_____|_|\_\______|_|  \_\
+                                                
+                                                
+
+PB Generaux
+- (crash si export wewe puis export $wewe, dans expand_var check si = aussi "crash sur toutes les fcts) FIXED
+
+- dans expand var stopper l'expand quand c'est plus un name (!= lettres ou chiffres) echo $PWD=22 FIXED
+
+- creer un semblant d'env si env -i ./minishell	FIXED
+
+- plusieurs heredoc dans pipes differents 	FIXED
+
+- echo test < | echo test ou echo test <| echo test  doit donner erreur parsing FIXED
+
+- cmd inexistante doit afficer msg d'erreur FIXED
+
+- entree dans readline pas crash			FIXED
+
+- bon retour avec fork et sans fork			FIXED
+
+- gerer erreur env -i != cmd not found		FIXED
+
+- gerer les signaux
+
+- quand une quote est pas ferme  ou commence/fini par pipe faut erreur mais pas quitter (et donner valeur de retour) FIXED 
+
+- dans parsing il faut donner une erreur de syntaxe si on ecrit echo < | test et pas quitter
+FIXED (il reste gerer les cas de redir collee) FIXED
+
+
+- gerer echo >bla et echo >               bla (le 2e marche deja) FIXED
+
+- pas crash quand on ecrit juste > test sans commande (creer un char **vide peut-etre) FIXED
+
+- refaire $? (je crois que ca marche mais il est bloque car dans le lexer $? est supprime alors qu'il faut le garder, erreur en dessous) FIXED
+
+- dans le parser il faut garder les var separees par les nonlettres non chiffre -> echo $PWD=22 doit marcher et echo $. doit pas crash, juste comme echo $wewewe FIXED
+
+ECHO http://pwet.fr/man/linux/commandes/posix/echo/
+ECHO basique 	OK
+ECHO -n 		OK
+ECHO $			OK
+ECHO $?			KO (a gerer dans expand)	FIXED
+
+CD http://pwet.fr/man/linux/commandes/posix/cd/
+
+CD  HOME notset OK
+CD	HOME set	OK
+CD 	/bla/blabla	OK
+CD 	.   ..		OK
+CD 	CDPATH		OK
+CD  NORMAL		OK
+CD	PERMISSION	OK
+
+PWD http://pwet.fr/man/linux/commandes/posix/pwd/
+PWD	NOARG		OK
+PWD	ARG			OK
+
+EXPORT http://pwet.fr/man/linux/commandes/posix/export/
+EXPORT NOARG	OK
+EXPORT wewe		OK
+EXPORT $NUL		OK	
+EXPORT wewe=	OK
+EXPORT wewe=bla	OK
+EXPORT we=bla puis export wewe=bla OK
+
+UNSET http://pwet.fr/man/linux/commandes/posix/unset/
+UNSET NOARG		OK
+UNSET 1 ARG		OK
+UNSET X ARG		OK
+UNSET 1 FAIL	OK
+UNSET X FAIL	OK
+
+ENV http://pwet.fr/man/linux/commandes/posix/env/
+ENV	NOARG		OK
+ENV	ARG			OK
+
+EXIT http://pwet.fr/man/linux/commandes/posix/exit/
+
+EXIT NOARG		OK
+EXIT ARG		OK
+EXIT WRONGARG	OK
+
+
+
+FERMETURE DES FDS
+-avec erreur		OK
+-sans erreur		OK
+-avec bcp de pipes	OK
+-sans pipe			OK 
+
+VALEURS DE RETOUR	OK
+
+MAUVAISE COMMANDE	OK
+
+MAUVAIS FD			OK
+-droit				OK
+-folder				OK
+
+BON FONCTIONNEMENT PIPE
+-cat | cat | ls		OK
+-erreur au milieu de pipe	OK
+-pb fd au milieu d'un pipe	OK
+
+- env -i export recree		OK
+- env -i env update			OK
+- 
+!!cas echo test | < readline.c crash double free 	FIXED
+!!cas $USER$NUL pas crash $NUL delete				FIXED

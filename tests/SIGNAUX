@@ -1,0 +1,24 @@
+6 signaux a faire
+
+- CTRL+D dans le prompt	OK
+quitte minishell et exit avec le return de la derniere commande (echo $? apres ctrlD)
+
+
+- CTRL+C dans le prompt
+efface la ligne et affiche un nouveau prompt    $? vaut 130
+
+- ctrl+\ dans le prompt
+ne fait rien
+
+
+Modifier les signaux apres avoir recu le prompt, avant de lancer l'execution(ignorer les signaux dans le parent et gerer dans l'enfant)
+
+- CTRL+D dans commande bloquante (sleep, wc sans arg, cat sans arg etc) OK (Francois - quiter a verifier)
+ne fait rien (ctl D ici = ctrl C dans promt) - quitte le procces et affiche nouveux prompt
+
+- CTRL+C dans commande bloquante (sleep, wc sans arg, cat sans arg etc)
+kill le process et affiche nouveau prompt $? vaut 130 ( presque la meme chose que avec le promps)
+
+- ctrl+\ dans commande bloquante (sleep, wc sans arg, cat sans arg etc)
+kill le process et affiche nouveau prompt $? vaut 131
+(message - soit manuelement. soit - envoyer signal vers enfant )
