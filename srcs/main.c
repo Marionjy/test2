@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 21:07:30 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/25 17:50:14 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/26 14:55:36 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,16 +100,6 @@ int	main(void)
 		if (!cmd)
 		{
 			dprintf(2, "ERROR, no cmd\n");
-			// destroy_env(&data);
-			// destroy_l_token(*(data.list_token));
-			// destroy_lcmd(*(data.l_cmd));
-			// *(data.list_token) = NULL;
-			// *(data.l_cmd) = NULL;
-			// data.l_env = NULL;
-			// free(data.list_token);
-			// free(data.l_cmd);
-			// rl_clear_history();
-			// exit(0);	//TODO faire une fonction d'exit propre
 			ft_exit(&data, 1);	//?int aleatoire 
 		}
 		add_history(cmd);	//TODO clear history a la fin/dans l'exit

@@ -6,7 +6,7 @@
 #    By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/15 21:04:30 by mjacquet          #+#    #+#              #
-#    Updated: 2022/04/22 18:07:29 by mjacquet         ###   ########.fr        #
+#    Updated: 2022/04/26 15:05:51 by mjacquet         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,14 +16,8 @@ TODO
 
 valgrind --suppressions=valgrind.supp --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --verbose --log-file=valgrind-out.txt --verbose ./minishell
 
-pop des redirs
-redir a voir close 3 etc??
-les redirs a revoir
-
 !! exit doit print "exit"
-ls > eh cree eh et mets ls dedans, mais mets "eh" aussi
 
-leaks env, voir comment free
 
 plsrs fct de free de char**
 test chaine vide (expansion et quotes aussi)
@@ -31,32 +25,27 @@ voir dans l'exec si builtin, comment on quitte le child
 
 free correctement dans l'exit
 
-/*attention segfault "echo hfjd ls df" 
-
--fonction de pop + get last de l'env?
-
-- expansion des variables d'env
+expansion $""USER a voir
 
 - execution a clean
 
 - exit status
 - signaux
-- redirections
-- heredocs et signaux dans les heredocs
+- heredocs signaux dans les heredocs, expansion dans les heredocs
 
 - builtins
 - fonction d'exit propre
 
-- erreurs de syntaxe
-
 - Makefile
 
 - norme
-- leaks et leaks de fd
 
+leak fd 
+FILE DESCRIPTORS: 5 open at exit.
+==11751== Open file descriptor 5: /dev/pts/0
+==11751==    at 0x49C28CB: dup (syscall-template.S:78)
+==11751==    by 0x406EFE: exec_without_pipes (new_exec.c:33)
+==11751==    by 0x406EA1: exec_general (new_exec.c:18)
+==11751==    by 0x4016E5: main (main.c:137)
 
-!! unsclosed quote ne devrait pas exit le shell
-attention a bien identifier les heredocs
-
-
-
+quand "" puis ctrl D

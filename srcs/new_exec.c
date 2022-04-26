@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 19:50:33 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/25 20:47:52 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/26 16:01:19 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	exec_without_pipes(t_data *data)
 		pid = fork();
 		if (pid == 0)
 		{
-			set_sig_hd_child();
+			set_sig_dft();
 			close(fd_in);
 			//TODO a securiser
 			launch_exec(data->av, data->arr_env, data);
@@ -53,6 +53,7 @@ void	exec_without_pipes(t_data *data)
 			ft_exit(data, 2);	//!a voir
 
 		}
+		set_sig_hd_child();
 		wait(NULL);
 	}
 
@@ -86,7 +87,7 @@ void	exec_with_pipes(t_data *data)
 		pid = fork();
 		if (pid == 0)
 		{
-			// set_sig_hd_child();
+			set_sig_dft();
 			dup2(fd_in, STDIN_FILENO);
 			if (i != data->nb_pipes)
 				dup2(pipefd[1], STDOUT_FILENO);
@@ -108,6 +109,7 @@ void	exec_with_pipes(t_data *data)
 			exit(0);	//! A changer
 		}
 
+		set_sig_hd_child();
 		close(fd_in);
 		fd_in = dup(pipefd[0]);
 		close(pipefd[0]);

@@ -6,7 +6,7 @@
 /*   By: mjacquet <mjacquet@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 17:26:11 by mjacquet          #+#    #+#             */
-/*   Updated: 2022/04/22 20:44:27 by mjacquet         ###   ########.fr       */
+/*   Updated: 2022/04/26 16:00:47 by mjacquet         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	handler(int sig)
 
 void	handler_child(int sig)
 {
-	dprintf(2, "HANDLER CHILD\n");
 	if (sig == SIGINT)
 	{
 		write(2, "\n", 2);
